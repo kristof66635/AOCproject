@@ -1,6 +1,7 @@
 package fr.istic.activeObject;
 
 
+import fr.istic.Display;
 import fr.istic.observer.Observer;
 import fr.istic.observer.ObserverGeneratorAsync;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
 
-public class Canal implements GeneratorAsync {
+public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
 
     private int value;
 
@@ -17,6 +18,7 @@ public class Canal implements GeneratorAsync {
 
     ScheduledExecutorService scheduledExecutorService;
     private Generator generator;
+    private Display display;
 
     public Canal(ScheduledExecutorService scheduledExecutorService, Generator generator) {
         this.scheduledExecutorService = scheduledExecutorService;
@@ -28,30 +30,53 @@ public class Canal implements GeneratorAsync {
      * @return
      */
 
-    @Override
-    public int getValue() throws ExecutionException, InterruptedException {
-        Callable<Integer> callable=null;
-        //callable = (Callable<Integer>)generator.getValue();
-
-        int random= (int)(Math.random()*100);
-        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
-
-    return (int)(future.get());
-
-    }
-
-    @Override
-    public void add(Observer o) {
-        //observers.add(o);
-    }
-
-    @Override
-    public void delete(Observer o) {
-        observers.remove(o);
-    }
 
     @Override
     public void execute() {
 
+    }
+    @Override
+    public Future<Integer> update() {
+        System.out.println("Canal.update():Future");
+
+        Callable<Integer> callable;
+        callable = (Callable<Integer>)display.update();
+
+        int random= (int)(Math.random()*100);
+        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
+
+        return future;
+
+    }
+
+    @Override
+    public Future<Integer> getValueFuture() {
+        System.out.println("Canal.getValueFuture():Future");
+
+        Callable<Integer> callable=null;
+        callable= this.generator::getValue;
+        int random= (int)(Math.random()*100);
+        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
+
+        return future;
+    }
+
+
+    @Override
+    public void add(ObserverGeneratorAsync o) {
+
+    }
+
+    @Override
+    public void delete(ObserverGeneratorAsync o) {
+
+    }
+
+
+    @Override
+    public Integer getValue() throws ExecutionException, InterruptedException {
+        System.out.println("Canal.getValue():Future");
+
+        return null;
     }
 }

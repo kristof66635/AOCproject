@@ -7,5 +7,6 @@ import java.util.concurrent.ExecutionException;
 
 public interface GeneratorAsync extends Subject {
 
-    int getValue() throws ExecutionException, InterruptedException;
+    Integer getValue() throws ExecutionException, InterruptedException;
+
 }

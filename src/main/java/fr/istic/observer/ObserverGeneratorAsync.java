@@ -6,11 +6,9 @@ import java.util.concurrent.Future;
 
 public interface ObserverGeneratorAsync extends Observer<GeneratorAsync> {
 
-    Future<Integer> update(GeneratorAsync subject);
-
     Future<Integer> getValueFuture();
 
-    Future<Integer> updatefuture(GeneratorAsync g);
+    Future<Integer> update();
 
-    void update(ObserverGeneratorAsync subject);
+
 }

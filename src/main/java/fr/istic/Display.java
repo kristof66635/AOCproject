@@ -18,11 +18,6 @@ public class Display implements ObserverGeneratorAsync {
         this.lebel = lebel;
     }
 
-    @Override
-    public Future<Integer> update(GeneratorAsync subject) {
-        //future = subject.getValue();
-        return null;
-    }
 
     /**
      * Client(display) appel le canal
@@ -31,18 +26,16 @@ public class Display implements ObserverGeneratorAsync {
 
     @Override
     public Future<Integer> getValueFuture() {
+        System.out.println("Display.getValueFuture():Future");
 
-        //return canal.getValue();
-        return null;
+        return canal.getValueFuture();
+
     }
 
     @Override
-    public Future<Integer> updatefuture(GeneratorAsync g) {
+    public Future<Integer> update() {
         return null;
     }
 
-    @Override
-    public void update(ObserverGeneratorAsync subject) {
 
-    }
 }

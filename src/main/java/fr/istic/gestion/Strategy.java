@@ -1,5 +1,6 @@
 package fr.istic.gestion;
 
+import fr.istic.activeObject.Generator;
 import javafx.scene.control.Label;
 
 public interface Strategy {
