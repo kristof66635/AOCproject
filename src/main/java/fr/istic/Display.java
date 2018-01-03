@@ -25,15 +25,15 @@ public class Display implements ObserverGeneratorAsync {
     }
 
     /**
-     * Client appel le canal
+     * Client(display) appel le canal
      * @return Valeur futur
      */
 
     @Override
     public Future<Integer> getValueFuture() {
 
-        return canal.getValue();
-
+        //return canal.getValue();
+        return null;
     }
 
     @Override
