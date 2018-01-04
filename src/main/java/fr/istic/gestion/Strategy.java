@@ -1,11 +1,8 @@
 package fr.istic.gestion;
 
-import fr.istic.activeObject.Generator;
-import javafx.scene.control.Label;
-
 public interface Strategy {
 
-    public void execute();
+    public void execute() ;
 
 
 

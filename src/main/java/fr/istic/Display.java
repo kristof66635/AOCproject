@@ -1,62 +1,74 @@
 package fr.istic;
 
 import fr.istic.activeObject.Canal;
-import fr.istic.activeObject.Generator;
-import fr.istic.activeObject.GeneratorAsync;
 import fr.istic.observer.ObserverGeneratorAsync;
 import javafx.scene.control.Label;
-
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class Display implements ObserverGeneratorAsync {
 
     Canal canal;
-    Future<Integer> future;
-    Label lebel;
+    Integer integer;
+    Label label;
+
+    public Display(Canal canal,Label label) {
+        this.canal = canal;
+        this.label=label;
+    }
 
     public Display(Canal canal) {
         this.canal = canal;
     }
 
-    public Display(Canal canal, Label lebel) {
-        this.canal = canal;
-        this.lebel = lebel;
-    }
-
-
     /**
      * Client(display) appel le canal
      * @return Valeur futur
      */
-
     @Override
-    public Future<Integer> getValueFuture() {
-        System.out.println("Display.getValueFuture():Future");
+    public void update() {
+        //future =canal.getValue();
 
-        return canal.getValueFuture();
+        integer=canal.getValue();
 
+
+        System.out.println("update(): "+integer+" Fin.");
+        //Platform.runLater(() -> label.setText("New value :"+integer));
     }
 
-    @Override
-    public Future<Integer> update() {
-        return null;
-    }
 
+
+
+
+/*
     public static void main(String[] args){
         ScheduledExecutorService scheduledExecutorService;
-        scheduledExecutorService = new ScheduledThreadPoolExecutor(20);
+        scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
         Canal canal;
-         Display display;
-         Generator generator;
+        Generator generator;
         generator=new Generator();
         canal=new Canal(scheduledExecutorService,generator);
-        display=new Display(canal);
-        System.out.println("Display.getValueFuture():Future");
-        scheduledExecutorService.scheduleAtFixedRate(generator::createvalue,0,100, TimeUnit.MILLISECONDS);
+        Display display=new Display(canal);
+        Strategy strategy=new Atomic(generator);
+        generator.add(canal);
+        //System.out.println("Display.getValueFuture():Future");
+        scheduledExecutorService.scheduleAtFixedRate(generator::createvalue,0,3000, TimeUnit.MILLISECONDS);
 
 
+    }
+*/
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public Canal getCanal() {
+        return canal;
+    }
+
+    public void setCanal(Canal canal) {
+        this.canal = canal;
     }
 }

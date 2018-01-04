@@ -4,6 +4,7 @@ package fr.istic.activeObject;
 import fr.istic.gestion.Strategy;
 import fr.istic.observer.ObserverGeneratorAsync;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Generator implements GeneratorAsync {
@@ -14,6 +15,9 @@ public class Generator implements GeneratorAsync {
 
     private Strategy strategy;
 
+    public Generator() {
+        observers=new ArrayList<>();
+    }
 
     public List<ObserverGeneratorAsync> getObservers() {
         return observers;
@@ -53,8 +57,12 @@ public class Generator implements GeneratorAsync {
      */
 
     public void createvalue() {
+
+
         this.value= (int)(Math.random() * 100);
         //update();
+        System.out.println("Debut :createvalue():"+value);
+
         execute();
     }
 

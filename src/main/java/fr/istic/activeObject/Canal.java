@@ -2,12 +2,10 @@ package fr.istic.activeObject;
 
 
 import fr.istic.Display;
-import fr.istic.observer.Observer;
 import fr.istic.observer.ObserverGeneratorAsync;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.*;
 
 public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
@@ -23,6 +21,7 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     public Canal(ScheduledExecutorService scheduledExecutorService, Generator generator) {
         this.scheduledExecutorService = scheduledExecutorService;
         this.generator = generator;
+        this.display=new Display(this);
     }
 
     /**
@@ -35,30 +34,28 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     public void execute() {
 
     }
-    @Override
-    public Future<Integer> update() {
-        System.out.println("Canal.update():Future");
-
-        Callable<Integer> callable;
-        callable = (Callable<Integer>)display.update();
-
-        int random= (int)(Math.random()*100);
-        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
-
-        return future;
-
-    }
 
     @Override
-    public Future<Integer> getValueFuture() {
-        System.out.println("Canal.getValueFuture():Future");
+    public Integer getValue() {
 
-        Callable<Integer> callable=null;
-        callable= this.generator::getValue;
-        int random= (int)(Math.random()*100);
-        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
+        Callable<Integer> callable= this.generator::getValue;
 
-        return future;
+        int random= (int)(Math.random()*1000);
+        //System.out.println("5555555555555555555555random"+random);
+
+        Future<Integer> future= scheduledExecutorService.schedule(this.generator::getValue,random,TimeUnit.MILLISECONDS);
+        Integer integer= null;
+
+        try {
+            integer = future.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println("getValue():"+integer);
+
+        return integer ;
     }
 
 
@@ -74,9 +71,23 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
 
 
     @Override
-    public Integer getValue() throws ExecutionException, InterruptedException {
-        System.out.println("Canal.getValue():Future");
+    public void update()  {
 
-        return null;
+       Runnable callable= this.display::update;
+
+        // callable = this.display::update;
+
+        int random= (int)(Math.random()*100);
+        Future<Integer> future= (Future<Integer>) scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
+
     }
+
+    public Display getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
+
 }

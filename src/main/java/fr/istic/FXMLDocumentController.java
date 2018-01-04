@@ -2,19 +2,19 @@ package fr.istic;
 
 import fr.istic.activeObject.Canal;
 import fr.istic.activeObject.Generator;
+import fr.istic.gestion.Atomic;
 import fr.istic.gestion.Strategy;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 
 /**
@@ -43,15 +43,20 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void start(ActionEvent event) {
-        label.setText("Hello World!");
-        scheduledExecutorService = new ScheduledThreadPoolExecutor(20);
-        scheduledExecutorService.scheduleAtFixedRate(generator::createvalue,0,100, TimeUnit.MILLISECONDS);
-        label.setText("");
+        scheduledExecutorService = new ScheduledThreadPoolExecutor(7);
+        generator=new Generator();
+        canal=new Canal(scheduledExecutorService,generator);
+        strategyatomic=new Atomic(generator);
+        generator.add(canal);
+        //System.out.println("Display.getValueFuture():Future");
+        scheduledExecutorService.scheduleAtFixedRate(generator::createvalue,0,3000, TimeUnit.MILLISECONDS);
+
 
     }
     @FXML
     private void stop(ActionEvent event) {
-        label.setText("Goodbye World!");
+
+        scheduledExecutorService.shutdown();
     }
 
 
@@ -59,9 +64,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        generator=new Generator();
-        canal=new Canal(scheduledExecutorService,generator);
-        display=new Display(canal,label);
+
 
 
 
