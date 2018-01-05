@@ -4,7 +4,7 @@ import fr.istic.activeObject.Generator;
 import fr.istic.observer.Observer;
 
 public class Atomic implements Strategy {
-    Generator generator;
+    private Generator generator;
 
 
     public Atomic(Generator generator) {
@@ -29,7 +29,7 @@ public class Atomic implements Strategy {
     @Override
     public void execute() {
         //System.out.println("Strategy.exec():/*********** depart commencez");
-
+        System.out.println("Using Atomic :");
         for(Observer observer : generator.getObservers()){
             //observer.update();
             observer.update();

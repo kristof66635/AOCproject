@@ -17,9 +17,12 @@ public class AOCproject extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(AOCproject.class.getResource("bootstrap3.css").toExternalForm());
         stage.setTitle("Project AOC");
         stage.setScene(scene);
         stage.show();
+
+
     }
 
     /**
@@ -29,5 +32,11 @@ public class AOCproject extends Application {
         launch(args);
     }
 
+
+    @Override
+    public void stop(){
+        System.out.println("Stage is closing");
+        System.exit(0);
+    }
 }
 

@@ -14,7 +14,7 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
 
     private List<ObserverGeneratorAsync> observers=new ArrayList<>();
 
-    ScheduledExecutorService scheduledExecutorService;
+    private ScheduledExecutorService scheduledExecutorService;
     private Generator generator;
     private Display display;
 
@@ -26,7 +26,7 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
 
     /**
      * Lancement asynchrone
-     * @return
+     *
      */
 
 
@@ -41,7 +41,7 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
         Callable<Integer> callable= this.generator::getValue;
 
         int random= (int)(Math.random()*1000);
-        //System.out.println("5555555555555555555555random"+random);
+        //System.out.println("random :"+random);
 
         Future<Integer> future= scheduledExecutorService.schedule(this.generator::getValue,random,TimeUnit.MILLISECONDS);
         Integer integer= null;
@@ -50,7 +50,9 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
             integer = future.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            System.out.println("InterruptedException :"+e.getMessage());
         } catch (ExecutionException e) {
+            System.out.println("ExecutionException:"+e.getMessage());
             e.printStackTrace();
         }
         System.out.println("getValue():"+integer);
@@ -73,12 +75,15 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     @Override
     public void update()  {
 
-       Runnable callable= this.display::update;
+        display.diplayGeneratedValue(generator.getValue());
+
+       Runnable runnable= this.display::update;
 
         // callable = this.display::update;
 
-        int random= (int)(Math.random()*100);
-        Future<Integer> future= (Future<Integer>) scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
+        int random= (int)(Math.random()*1000);
+        Future<Integer> future;
+        future = (Future<Integer>) scheduledExecutorService.schedule(runnable,random, TimeUnit.MILLISECONDS);
 
     }
 

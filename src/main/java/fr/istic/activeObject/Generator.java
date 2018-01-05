@@ -15,6 +15,10 @@ public class Generator implements GeneratorAsync {
 
     private Strategy strategy;
 
+
+
+
+
     public Generator() {
         observers=new ArrayList<>();
     }
@@ -94,4 +98,5 @@ public class Generator implements GeneratorAsync {
 
 
     }
+
 }

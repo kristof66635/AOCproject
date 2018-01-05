@@ -1,6 +1,5 @@
 package fr.istic.gestion;
 
-import fr.istic.activeObject.Canal;
 import fr.istic.activeObject.Generator;
 import fr.istic.observer.Observer;
 
@@ -28,11 +27,11 @@ public class Sequentiel implements Strategy {
      */
     @Override
     public void execute() {
-        //System.out.println("Strategy.exec()");
+        System.out.println("Using Sequentiel :");
 
         for(Observer observer : generator.getObservers()){
             //observer.update();
-            ((Canal)observer).update();
+            observer.update();
 
 
         }

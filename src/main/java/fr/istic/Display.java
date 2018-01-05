@@ -2,17 +2,19 @@ package fr.istic;
 
 import fr.istic.activeObject.Canal;
 import fr.istic.observer.ObserverGeneratorAsync;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 
 public class Display implements ObserverGeneratorAsync {
 
-    Canal canal;
-    Integer integer;
-    Label label;
+    private Canal canal;
+    private Integer integer;
+    private Label labelDis;
+    private Label labelGen;
 
-    public Display(Canal canal,Label label) {
+    public Display(Canal canal,Label labelDis) {
         this.canal = canal;
-        this.label=label;
+        this.labelDis = labelDis;
     }
 
     public Display(Canal canal) {
@@ -31,9 +33,15 @@ public class Display implements ObserverGeneratorAsync {
 
 
         System.out.println("update(): "+integer+" Fin.");
-        //Platform.runLater(() -> label.setText("New value :"+integer));
+        Platform.runLater(() -> labelDis.setText(String.valueOf(integer)));
     }
 
+    public void diplayGeneratedValue(Integer integer){
+
+        Platform.runLater(() -> labelGen.setText(String.valueOf(integer)));
+
+
+    }
 
 
 
@@ -56,12 +64,12 @@ public class Display implements ObserverGeneratorAsync {
     }
 */
 
-    public Label getLabel() {
-        return label;
+    public Label getLabelDis() {
+        return labelDis;
     }
 
-    public void setLabel(Label label) {
-        this.label = label;
+    public void setLabelDis(Label labelDis) {
+        this.labelDis = labelDis;
     }
 
     public Canal getCanal() {
@@ -70,5 +78,13 @@ public class Display implements ObserverGeneratorAsync {
 
     public void setCanal(Canal canal) {
         this.canal = canal;
+    }
+
+    public Label getLabelGen() {
+        return labelGen;
+    }
+
+    public void setLabelGen(Label labelGen) {
+        this.labelGen = labelGen;
     }
 }
