@@ -3,6 +3,12 @@ package fr.istic.gestion;
 import fr.istic.activeObject.Generator;
 import fr.istic.observer.Observer;
 
+import java.util.concurrent.ExecutionException;
+
+/**
+ * Atomic strategy for managing the observers
+ *
+ */
 public class Atomic implements Strategy {
     private Generator generator;
 
@@ -32,7 +38,13 @@ public class Atomic implements Strategy {
         System.out.println("Using Atomic :");
         for(Observer observer : generator.getObservers()){
             //observer.update();
-            observer.update();
+            try {
+                observer.update().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
 
         }
@@ -44,8 +56,11 @@ public class Atomic implements Strategy {
      * @return vrai si la diffusion est terminé, faux sinon
      */
     @Override
-    public boolean isDone() {
-        return false;
+    public boolean isDone(int current) {
+
+
+            return false;
+
     }
 
 }

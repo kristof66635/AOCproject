@@ -7,6 +7,9 @@ import fr.istic.observer.ObserverGeneratorAsync;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Generator (Subject)
+ */
 public class Generator implements GeneratorAsync {
 
     private Integer value;
@@ -50,6 +53,7 @@ public class Generator implements GeneratorAsync {
     @Override
     public Integer getValue() {
 
+        //System.out.println("Valeur recuperée :"+value);
 
         return value;
 

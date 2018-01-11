@@ -3,47 +3,47 @@ package fr.istic.gestion;
 import fr.istic.activeObject.Generator;
 import fr.istic.observer.Observer;
 
-public class Sequentiel implements Strategy {
-
+/**
+ * Does not work, using a sequential strategy
+ *
+ */
+public class Timed  implements Strategy{
     private Generator generator;
+    private int delay=500;
 
-    public Sequentiel(Generator generator) {
+    public Timed(Generator generator) {
         this.generator = generator;
         generator.setStrategy(this);
+
+
     }
 
-    public Generator getGenerator() {
-        return generator;
-    }
-
-    public void setGenerator(Generator generator) {
+    public Timed(Generator generator, int delay) {
         this.generator = generator;
+        generator.setStrategy(this);
+        this.delay=delay;
     }
 
-    /**
-     * notify all observers
-     *
-     *
-     */
+
     @Override
     public void execute() {
-        System.out.println("Using Sequentiel :");
-
+        int i=0;
         for(Observer observer : generator.getObservers()){
             //observer.update();
-            observer.update();
 
+            observer.update();
+            //premier envoye ==premier affiche
 
         }
 
     }
 
-
     /**
+     * @param current
      * @return vrai si la diffusion est terminé, faux sinon
      */
     @Override
-    public boolean isDone() {
+    public boolean isDone(int current) {
         return false;
     }
 }

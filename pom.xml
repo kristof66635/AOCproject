@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <build>
-        <finalName>MyJavaFX</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -23,11 +22,26 @@
             <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>8.8.3</version>
+                <version>8.6.0</version>
                 <configuration>
-                    <mainClass>fr.istic.AOCproject</mainClass>
+                    <mainClass></mainClass>
+                    <verbose>true</verbose>
+                    <jfxAppOutputDir>fr.istic.AOCproject</jfxAppOutputDir>
+                    <jfxMainAppJarName>AOCproject</jfxMainAppJarName>
+                    <updateExistingJar>true</updateExistingJar>
+                    <allPermissions>true</allPermissions>
                 </configuration>
-            </plugin> <plugin>
+                <executions>
+                    <execution>
+                        <id>create-jfxjar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>

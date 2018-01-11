@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * The canal (Proxy) for the two calls
+ */
 public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
 
     private int value;
@@ -17,6 +20,8 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     private ScheduledExecutorService scheduledExecutorService;
     private Generator generator;
     private Display display;
+    private int ranks=0;
+
 
     public Canal(ScheduledExecutorService scheduledExecutorService, Generator generator) {
         this.scheduledExecutorService = scheduledExecutorService;
@@ -38,12 +43,16 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     @Override
     public Integer getValue() {
 
-        Callable<Integer> callable= this.generator::getValue;
+        //rank*1000000+getvaleu
+
 
         int random= (int)(Math.random()*1000);
+
+        Callable<Integer> callable = this.generator::getValue;
+
         //System.out.println("random :"+random);
 
-        Future<Integer> future= scheduledExecutorService.schedule(this.generator::getValue,random,TimeUnit.MILLISECONDS);
+        Future<Integer> future= scheduledExecutorService.schedule(callable,random,TimeUnit.MILLISECONDS);
         Integer integer= null;
 
         try {
@@ -72,20 +81,7 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
     }
 
 
-    @Override
-    public void update()  {
 
-        display.diplayGeneratedValue(generator.getValue());
-
-       Runnable runnable= this.display::update;
-
-        // callable = this.display::update;
-
-        int random= (int)(Math.random()*1000);
-        Future<Integer> future;
-        future = (Future<Integer>) scheduledExecutorService.schedule(runnable,random, TimeUnit.MILLISECONDS);
-
-    }
 
     public Display getDisplay() {
         return display;
@@ -95,4 +91,21 @@ public class Canal implements GeneratorAsync,ObserverGeneratorAsync {
         this.display = display;
     }
 
+
+
+    @Override
+    public Future update() {
+        int random= (int)(Math.random()*1000);
+        display.diplayGeneratedValue(generator.getValue());
+
+        Runnable runnable= this.display::update;
+
+        // callable = this.display::update;
+
+        System.out.println("random :"+random);
+
+        Future<Integer> future;
+        future = (Future<Integer>) scheduledExecutorService.schedule(runnable,random, TimeUnit.MILLISECONDS);
+
+        return future;    }
 }

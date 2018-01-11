@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ *The FX Apllication class
  * @author chak
  */
 public class AOCproject extends Application {

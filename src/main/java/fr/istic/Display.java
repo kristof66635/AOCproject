@@ -5,6 +5,11 @@ import fr.istic.observer.ObserverGeneratorAsync;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 
+import java.util.concurrent.Future;
+
+/**
+ * Displaying the number on the UI (Observer)
+ */
 public class Display implements ObserverGeneratorAsync {
 
     private Canal canal;
@@ -12,7 +17,7 @@ public class Display implements ObserverGeneratorAsync {
     private Label labelDis;
     private Label labelGen;
 
-    public Display(Canal canal,Label labelDis) {
+    public Display(Canal canal, Label labelDis) {
         this.canal = canal;
         this.labelDis = labelDis;
     }
@@ -25,44 +30,21 @@ public class Display implements ObserverGeneratorAsync {
      * Client(display) appel le canal
      * @return Valeur futur
      */
+
     @Override
-    public void update() {
-        //future =canal.getValue();
-
+    public Future update() {
         integer=canal.getValue();
-
-
-        System.out.println("update(): "+integer+" Fin.");
-        Platform.runLater(() -> labelDis.setText(String.valueOf(integer)));
+            System.out.println("update(): " + integer + " Fin.");
+            Platform.runLater(() -> labelDis.setText(String.valueOf(integer % 100)));
+        return null;
     }
 
     public void diplayGeneratedValue(Integer integer){
 
-        Platform.runLater(() -> labelGen.setText(String.valueOf(integer)));
+        Platform.runLater(() -> labelGen.setText(String.valueOf(integer%100)));
 
 
     }
-
-
-
-
-/*
-    public static void main(String[] args){
-        ScheduledExecutorService scheduledExecutorService;
-        scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
-        Canal canal;
-        Generator generator;
-        generator=new Generator();
-        canal=new Canal(scheduledExecutorService,generator);
-        Display display=new Display(canal);
-        Strategy strategy=new Atomic(generator);
-        generator.add(canal);
-        //System.out.println("Display.getValueFuture():Future");
-        scheduledExecutorService.scheduleAtFixedRate(generator::createvalue,0,3000, TimeUnit.MILLISECONDS);
-
-
-    }
-*/
 
     public Label getLabelDis() {
         return labelDis;
@@ -87,4 +69,7 @@ public class Display implements ObserverGeneratorAsync {
     public void setLabelGen(Label labelGen) {
         this.labelGen = labelGen;
     }
+
+
+
 }
